@@ -21,7 +21,8 @@ class HRPolicyRAG:
             metadata={"hnsw:space": "cosine"},
         )
         self.embedding_model = SentenceTransformer(
-            os.getenv("EMBEDDING_MODEL", "sentence-transformers/all-MiniLM-L6-v2")
+            os.getenv("EMBEDDING_MODEL", "sentence-transformers/all-MiniLM-L6-v2"),
+            device="cpu",
         )
         self.groq_api_key = os.getenv("GROQ_API_KEY", "").strip()
         self.model_name = os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile")
@@ -122,7 +123,7 @@ class HRPolicyRAG:
         )
         if not self.client_llm:
             return {
-                "answer": "Retrieval is working, but GROQ_API_KEY is not configured. Add a valid key to your .env file to enable answer generation.",
+                "answer": "Retrieval is working, but GROQ_API_KEY is not configured. Add GROQ_API_KEY as a Space secret (or in your .env file locally) to enable answer generation.",
                 "sources": self._sources(hits),
             }
         system_prompt = """You are an HR policy assistant. Answer only from the supplied policy context.
