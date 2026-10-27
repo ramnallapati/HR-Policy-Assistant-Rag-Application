@@ -4,7 +4,7 @@ import re
 from pathlib import Path
 
 import chromadb
-import fitz
+import pymupdf
 from sentence_transformers import SentenceTransformer
 from groq import Groq
 
@@ -31,7 +31,7 @@ class HRPolicyRAG:
     def extract_text(path: Path) -> str:
         suffix = path.suffix.lower()
         if suffix == ".pdf":
-            with fitz.open(path) as pdf:
+            with pymupdf.open(path) as pdf:
                 return "\n".join(page.get_text("text") for page in pdf)
         if suffix in {".txt", ".md"}:
             return path.read_text(encoding="utf-8", errors="ignore")
