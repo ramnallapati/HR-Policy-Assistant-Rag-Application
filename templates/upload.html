@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Manage Policies · PeoplePolicy AI{% endblock %}
+{% block content %}
+<section class="welcome"><div><div class="eyebrow">ADMINISTRATION</div><h1>Manage policy documents</h1><p class="muted">Upload text-based PDF, TXT, or Markdown policies to index them for retrieval.</p></div><a class="secondary" href="{{ url_for('index') }}">← Back to assistant</a></section>
+<div class="admin-grid">
+  <section class="side-card">
+    <div class="side-icon">↑</div><h2>Upload a policy</h2><p class="muted">Files are split into overlapping chunks, embedded, and stored in persistent ChromaDB.</p>
+    <form method="post" enctype="multipart/form-data" class="upload-form">
+      <label class="dropzone"><span class="upload-symbol">＋</span><b>Choose a document</b><small>PDF, TXT, or MD · Max {{ config.get('MAX_CONTENT_LENGTH', 15728640) // 1048576 }} MB</small><input type="file" name="file" accept=".pdf,.txt,.md" required></label>
+      <button class="primary full" type="submit">Upload and index</button>
+    </form>
+    <div class="notice"><b>Before uploading</b><p>Only upload approved company policies. This demo does not implement malware scanning, document approval workflows, or document-level employee permissions.</p></div>
+  </section>
+  <section class="side-card"><div class="panel-heading"><div><h2>Indexed documents</h2><p class="muted">Current collection contents</p></div><span class="count">{{ documents|length }}</span></div>
+    {% if documents %}<div class="admin-docs">{% for doc in documents %}<div class="admin-doc"><span class="file-icon">PDF</span><div><b>{{ doc.name }}</b><small>{{ doc.chunks }} chunks indexed</small></div><span class="check">✓</span></div>{% endfor %}</div>{% else %}<div class="empty"><div>▤</div><b>No policies indexed yet</b><p>Upload your first approved policy document to get started.</p></div>{% endif %}
+  </section>
+</div>
+{% endblock %}

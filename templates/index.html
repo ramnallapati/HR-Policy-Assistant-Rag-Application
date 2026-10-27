@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}HR Assistant · PeoplePolicy AI{% endblock %}
+{% block content %}
+<section class="welcome">
+  <div><div class="eyebrow">PEOPLE OPERATIONS ASSISTANT</div><h1>How can I help you today?</h1><p class="muted">Ask a question about your HR policies. Answers include source documents for verification.</p></div>
+  <div class="status"><span class="status-dot"></span> Policy assistant online</div>
+</section>
+<div class="workspace">
+  <section class="chat-panel">
+    <div class="panel-heading"><div><h2>Policy chat</h2><p class="muted">Grounded answers · Source-aware retrieval</p></div><button id="clearChat" class="quiet" type="button">Clear chat</button></div>
+    <div id="messages" class="messages">
+      <div class="message assistant"><div class="avatar">P</div><div class="bubble"><b>Hello, {{ username }}.</b><p>Ask me about leave, benefits, attendance, workplace conduct, or another policy available to me.</p><small>Always verify important decisions with HR.</small></div></div>
+    </div>
+    <div class="suggestions">
+      <button type="button" data-prompt="What leave policies are available in the indexed documents?">Leave policies</button>
+      <button type="button" data-prompt="Summarize the work-from-home policy from the indexed documents.">Work from home</button>
+      <button type="button" data-prompt="What should I do if a policy does not answer my question?">Need HR help</button>
+    </div>
+    <form id="chatForm" class="composer"><textarea id="question" rows="1" maxlength="1500" placeholder="Ask an HR policy question…" required></textarea><button class="send" id="sendBtn" aria-label="Send message">↑</button></form>
+    <div class="composer-note">AI-generated answers can be incomplete. Do not enter sensitive employee information.</div>
+  </section>
+  <aside class="side-panel">
+    <div class="side-card"><div class="side-icon">▤</div><h3>Policy library</h3><p class="muted">Documents currently indexed in ChromaDB.</p><div id="docList" class="doc-list"><span class="muted">Loading documents…</span></div>{% if role == 'admin' %}<a class="secondary full-link" href="{{ url_for('upload') }}">Manage documents →</a>{% endif %}</div>
+    <div class="side-card trust-card"><div class="side-icon">✓</div><h3>Built for clarity</h3><ul><li>Answers based on indexed policy text</li><li>Source excerpts for review</li><li>Uncertainty surfaced when evidence is missing</li></ul></div>
+    <div class="privacy-note"><b>Privacy reminder</b><p>Use approved, non-sensitive questions. This demo is not a replacement for your company's HR system or access-control review.</p></div>
+  </aside>
+</div>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='app.js') }}" defer></script>{% endblock %}

@@ -1,0 +1,10 @@
+.env
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+data/chroma/
+data/uploads/*
+!data/uploads/.gitkeep
+.DS_Store

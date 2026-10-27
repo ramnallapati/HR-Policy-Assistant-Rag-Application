@@ -1,0 +1,24 @@
+services:
+  hr-policy-rag:
+    build: .
+    container_name: hr-policy-rag
+    ports:
+      - "5000:5000"
+    env_file:
+      - .env
+    environment:
+      CHROMA_PATH: /app/data/chroma
+    volumes:
+      - chroma_data:/app/data/chroma
+      - uploads_data:/app/data/uploads
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:5000/health', timeout=5)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+volumes:
+  chroma_data:
+  uploads_data:
