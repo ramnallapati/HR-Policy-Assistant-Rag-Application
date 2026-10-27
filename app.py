@@ -7,6 +7,13 @@ from pathlib import Path
 
 import gradio as gr
 
+try:  # local runs: read variables from .env (not needed on Hugging Face Spaces)
+    from dotenv import load_dotenv
+
+    load_dotenv()
+except ImportError:
+    pass
+
 from rag import HRPolicyRAG
 
 # Optional: only needed if the Space is created on ZeroGPU hardware (free accounts).
